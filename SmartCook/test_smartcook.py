@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch
 from generator import generate_recipe
 
+
 class TestSmartCook(unittest.TestCase):
     @patch("generator.openai.Completion.create")
     def test_generate_recipe_returns_text(self, mock_openai):
@@ -27,6 +28,7 @@ class TestSmartCook(unittest.TestCase):
         result = generate_recipe("surprise", language="tr", style="grandma")
 
         self.assertIn("Surprise Recipe Generated", result)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -48,15 +48,13 @@ MESSAGES = {
 }
 
 
-import pyttsx3
-
 def speak_text(text: str, language: str = "en"):
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
 
     if language == "tr":
         # Türkçe ses: macOS'ta "Yelda", Windows'ta "Hazal", "Tolga", "Microsoft Tolga"
-        turkish_voice = next( 
+        turkish_voice = next(
             (
                 v for v in voices
                 if "Yelda" in v.name or "Hazal" in v.name or "Tolga" in v.name or "Microsoft Tolga" in v.name
@@ -86,7 +84,6 @@ def speak_text(text: str, language: str = "en"):
 
     engine.say(text)
     engine.runAndWait()
-
 
 
 def generate_recipe(ingredients: str, language: str = "en", style: str = "fun") -> str:
