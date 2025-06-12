@@ -3,7 +3,7 @@ import pyperclip
 import pyttsx3
 import random
 
-openai.api_key = "RM"
+openai.api_key = "REMOVED"
 
 MODEL_NAME = "gpt-3.5-turbo-instruct"
 
@@ -48,23 +48,45 @@ MESSAGES = {
 }
 
 
+import pyttsx3
+
 def speak_text(text: str, language: str = "en"):
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
 
     if language == "tr":
-        # Türkçe ses bulmaya çalış
-        turkish_voice = next((v for v in voices if "tr" in v.id.lower() or "turkish" in v.name.lower()), None)
+        # Türkçe ses: macOS'ta "Yelda", Windows'ta "Hazal", "Tolga", "Microsoft Tolga"
+        turkish_voice = next( 
+            (
+                v for v in voices
+                if "Yelda" in v.name or "Hazal" in v.name or "Tolga" in v.name or "Microsoft Tolga" in v.name
+            ),
+            None
+        )
         if turkish_voice:
             engine.setProperty('voice', turkish_voice.id)
+        else:
+            print("Türkçe ses bulunamadı, varsayılan ses kullanılacak.")
     else:
-        # İngilizce ses bulmaya çalış (varsayılan olarak en_US veya en_GB)
-        english_voice = next((v for v in voices if "en" in v.id.lower() or "english" in v.name.lower()), None)
+        # İngilizce ses: macOS'ta "Alex", "Samantha"; Windows'ta "Microsoft David", "Microsoft Zira" vs.
+        english_voice = next(
+            (
+                v for v in voices
+                if "en" in v.id.lower()
+                or "english" in v.name.lower()
+                or "Alex" in v.name
+                or "Samantha" in v.name
+                or "Microsoft David" in v.name
+                or "Microsoft Zira" in v.name
+            ),
+            None
+        )
         if english_voice:
             engine.setProperty('voice', english_voice.id)
 
     engine.say(text)
     engine.runAndWait()
+
 
 
 def generate_recipe(ingredients: str, language: str = "en", style: str = "fun") -> str:
@@ -173,7 +195,7 @@ def main() -> None:
     body = "\n".join(lines[1:])
 
     print(msgs["result"])
-    print(f"📛 {title}\n{body}")
+    print(f"{title}\n{body}")
 
     if input(msgs["voice_prompt"]).strip().lower() in ("y", "e"):
         speak_text(recipe, language)
